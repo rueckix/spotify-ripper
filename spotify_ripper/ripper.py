@@ -12,7 +12,6 @@ from spotify_ripper.web import WebAPI
 from spotify_ripper.sync import Sync
 from spotify_ripper.eventloop import EventLoop
 from datetime import datetime
-from spotify_ripper.remove_all_from_playlist import get_playlist_tracks
 import os
 import sys
 import time
@@ -59,7 +58,7 @@ class Ripper(threading.Thread):
     dev_null = None
     stop_time = None
     track_path_cache = {}
-    playlist_uri = None
+
     rip_queue = queue.Queue()
 
     # threading events
@@ -123,7 +122,6 @@ class Ripper(threading.Thread):
         self.session = spotify.Session(config=config)
         self.session.volume_normalization = args.normalize
 
-
         # disable scrobbling
         self.session.social.set_scrobbling(
             spotify.SocialProvider.SPOTIFY,
@@ -150,7 +148,6 @@ class Ripper(threading.Thread):
                         self.play_token_lost)
         self.session.on(spotify.SessionEvent.LOGGED_IN,
                         self.on_logged_in)
-
 
         self.event_loop = EventLoop(self.session, 0.1, self)
 
@@ -189,8 +186,6 @@ class Ripper(threading.Thread):
         self.ripper_continue.wait()
         if self.abort.is_set():
             return
-        #set session to provate
-        self.session.social.private_session = True
 
         # list of spotify URIs
         uris = args.uri
@@ -264,6 +259,9 @@ class Ripper(threading.Thread):
 
                     if self.abort.is_set():
                         break
+
+                    # before we skip or can fail loading the track
+                    self.progress.increment_track_idx()
 
                     print('Loading track...')
                     track.load(args.timeout)
@@ -374,7 +372,6 @@ class Ripper(threading.Thread):
         self.logout()
         self.stop_event_loop()
         self.finished.set()
-        sys.exit()
 
     def check_stop_time(self):
         args = self.args
@@ -418,36 +415,40 @@ class Ripper(threading.Thread):
         # ignore if the uri is just blank (e.g. from a file)
         if not uri:
             return iter([])
-        trackList = []
-        uriList = []
+
         args = self.args
         link = self.session.get_link(uri)
-        track_list = []
         if link.type == spotify.LinkType.TRACK:
             track = link.as_track()
             return iter([track])
         elif link.type == spotify.LinkType.PLAYLIST:
-            print('get playlist tracks')
-            self.playlist_uri = uri
-            tracks = get_playlist_tracks(self.session.user.canonical_name, uri)
-            track_list = tracks.get('items')
-            for n in track_list:
-                thisTrack = n.get('track')
-                thisTrackuri = thisTrack.get('uri')
-                uriList.append(thisTrackuri)
-            tracksIter = iter(uriList)
-            for i in tracksIter:
-                trackList.append(self.session.get_link(i).as_track())
+            self.current_playlist = link.as_playlist()
+            attempt_count = 1
+            while self.current_playlist is None:
+                if attempt_count > 3:
+                    print(Fore.RED + "Could not load playlist..." +
+                          Fore.RESET)
+                    return iter([])
+                print("Attempt " + str(attempt_count) + " failed: Spotify " +
+                      "returned None for playlist, trying again in 5 " +
+                      "seconds...")
+                time.sleep(5.0)
+                self.current_playlist = link.as_playlist()
+                attempt_count += 1
+
             print('Loading playlist...')
-            return iter(trackList)
+            self.current_playlist.load(args.timeout)
+            return iter(self.current_playlist.tracks)
         elif link.type == spotify.LinkType.STARRED:
             link_user = link.as_user()
+
             def load_starred():
                 if link_user is not None:
                     return self.session.get_starred(link_user.canonical_name)
                 else:
                     return self.session.get_starred()
             starred = load_starred()
+
             attempt_count = 1
             while starred is None:
                 if attempt_count > 3:
@@ -460,6 +461,7 @@ class Ripper(threading.Thread):
                 time.sleep(5.0)
                 starred = load_starred()
                 attempt_count += 1
+
             print('Loading starred playlist...')
             starred.load(args.timeout)
             return iter(starred.tracks)
