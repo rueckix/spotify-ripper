@@ -5,6 +5,7 @@ A fork of
 
 ***IMPORTANT*** Due to the playlist retreival method of libspotify (pyspotify library) no longer functioning, a spotify web api account is now required for playlist ripping and emptying
                 please read the section below "Remove From Playlist Option" for instructions and tips on setting up a web api client and generating a token
+                Take a look at: https://developer.spotify.com/console/
 
                 make sure you export the web api credentials in your unix shell
                 export SPOTIPY_CLIENT_ID='77aa1aa93dc0416397f22a7a9b4a815b'
@@ -169,8 +170,8 @@ Command Line
                             Convert the file name to normalized ASCII with unicodedata.normalize (NFKD)
       -o, --overwrite       Overwrite existing MP3 files [Default=skip]
       --opus                Rip songs to Opus encoding instead of MP3
-      --partial-check {none,weak,strict}
-                            Check for and overwrite partially ripped files. "weak" will err on the side of not re-ripping the file if it is unsure, whereas "strict" will re-rip the file [Default=weak]
+	  --partial-check {none,weak,weak:<sec>,strict}
+                        	Check for and overwrite partially ripped files. "weak" will err on the side of not re-ripping the file if it is unsure, whereas "strict" will re-rip the file.  You can override the number of seconds of wiggle-room for the "weak" check using "weak:<sec>" [Default=weak:3]
       --play-token-resume RESUME_AFTER
                             If the 'play token' is lost to a different device using the same Spotify account, the script will wait a speficied amount of time before restarting. This argument takes the same values as --resume-after [Default=abort]
       --playlist-m3u        create a m3u file when ripping a playlist
@@ -210,7 +211,8 @@ Command Line
 Facebook Login
 ~~~~~~~~~~~~~~
 
-Spotify-ripper will work with your regular Facebook login/password if you setup your Spotify account to login using your Facebook credentials.  Otherwise, use your Spotify login/password.
+It's claimed that Spotify-ripper will work with your regular Facebook login/password if you setup your Spotify account to login using your Facebook credentials, but I have not succeeded in making this work.  After converting the (premium) account use a Spotify login/password, login succeeded.
+Follow this procedure: <https://support.spotify.com/dk/account_payment_help/account_help/i-want-to-use-spotify-without-facebook/>
 
 Config File
 ~~~~~~~~~~~
@@ -235,6 +237,7 @@ The format string dictates how ``spotify-ripper`` will organize your ripped file
 
 The ``--flat`` option is shorthand for using the format string: ``{artist} - {track_name}.{ext}``, and the ``--flat-with-index`` option is shorthand for using the format string: ``{idx:3} - {artist} - {track_name}.{ext}``.  The use of these shorthand options will override any ``--format`` string option given.
 
+Additionally, you can now use a substring function.  The typical use case is to classify e.g. all artists in folders using the first digit of the artist name, converted to lower or upper case: ``{artist:1l}/{artist} - {track_name}.{ext}``
 Your format string can include the following variables names, which are case-sensitive and wrapped in curly braces, if you want your file/path name to be overwritten with Spotify metadata.
 
 Format String Variables
@@ -309,7 +312,9 @@ Format String Variables
 +-----------------------------------------+-----------------------------------------------+
 |``{track_uri}``, ``{uri}``               | Spotify track uri                             |
 +-----------------------------------------+-----------------------------------------------+
-
+|``{artist:*n[lL]*}``		              | Takes the first *n* digits of the artist name |
+|                                         | and convert to lower (l) or upper (L) case    |
++-----------------------------------------+-----------------------------------------------+
 Any substring in the format string that does not match a variable above will be passed through to the file/path name unchanged.
 
 Zero-Filled Padding

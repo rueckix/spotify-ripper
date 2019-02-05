@@ -302,8 +302,23 @@ def format_track_string(ripper, format_string, idx, track):
                  "smart_track_num", "smart_track_idx", "smart_track_index"}
     prefix_tags = {"feat_artists", "featuring_artists"}
     paren_tags = {"track_name", "track"}
+    substr_tags = {"artist"}
     for tag in tags.keys():
         format_string = format_string.replace("{" + tag + "}", tags[tag])
+        if tag in substr_tags:
+            match = re.search(r"\{" + tag + r":\d+[lL]\}", format_string)
+            if match:
+                tokens = format_string[match.start():match.end()]\
+                    .strip("{}").split(":")
+                token = tokens[1]
+                digits = int(token[:-1]) if token[-1].isalpha() else int(token)
+                tag_filled = tags[tag][0:digits]
+                if token[-1].isalpha():
+                    tag_filled = tag_filled.lower() if token[-1].islower() else tag_filled.upper()
+                else:
+                    tag_filled = tags[tag][0:digits]
+                format_string = format_string[:match.start()] + tag_filled + \
+                    format_string[match.end():]
         if tag in fill_tags:
             match = re.search(r"\{" + tag + r":\d+\}", format_string)
             if match:
@@ -433,7 +448,7 @@ def format_size(size, short=False):
 # returns true if audio_file is a partial of track
 def is_partial(audio_file, track):
     args = get_args()
-    if (args.partial_check == "none"):
+    if args.partial_check == "none":
         return False
 
     def audio_file_duration(audio_file):
@@ -446,12 +461,15 @@ def is_partial(audio_file, track):
     audio_file_dur = audio_file_duration(audio_file)
 
     # for 'weak', give a ~1.5 second wiggle-room
-    if (args.partial_check == "strict"):
+    if args.partial_check == "strict":
         return (audio_file_dur is None or
             track.duration > (audio_file_dur * 1000))
     else:
+        wiggle_room = max((track.duration * 0.01), 3000) if \
+            args.partial_check == "weak" else \
+            int(args.partial_check.split(":")[1]) * 1000
         return (audio_file_dur is not None and
-            (track.duration - 1500) > (audio_file_dur * 1000))
+            (track.duration - wiggle_room) > (audio_file_dur * 1000))
 
 
 # borrowed from eyeD3
