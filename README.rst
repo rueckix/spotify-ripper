@@ -312,7 +312,7 @@ Format String Variables
 +-----------------------------------------+-----------------------------------------------+
 |``{track_uri}``, ``{uri}``               | Spotify track uri                             |
 +-----------------------------------------+-----------------------------------------------+
-|``{artist:n[lL]}``                       | Takes the first *n* digits of the artist name |
+|``{artist:*n[lL]*}``                       | Takes the first *n* digits of the artist name |
 |                                         | and convert to lower (l) or upper (L) case    |
 +-----------------------------------------+-----------------------------------------------+
 
