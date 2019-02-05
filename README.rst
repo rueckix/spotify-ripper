@@ -315,6 +315,7 @@ Format String Variables
 |``{artist:*n[lL]*}``		              | Takes the first *n* digits of the artist name |
 |                                         | and convert to lower (l) or upper (L) case    |
 +-----------------------------------------+-----------------------------------------------+
+
 Any substring in the format string that does not match a variable above will be passed through to the file/path name unchanged.
 
 Zero-Filled Padding
