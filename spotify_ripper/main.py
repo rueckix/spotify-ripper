@@ -358,6 +358,9 @@ def main(prog_args=sys.argv[1:]):
         '--timeout', type=int,
         help='Override the PySpotify timeout value in seconds (Default=10 seconds)')
     parser.add_argument(
+        '--update-metadata', action='store_true',
+        help='Attempt to update metadata on existing files from Spotify\'s Web API')
+    parser.add_argument(
         '-V', '--version', action='version', version=prog_version)
     encoding_group.add_argument(
         '--wav', action='store_true',

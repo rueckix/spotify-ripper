@@ -83,19 +83,19 @@ class Ripper(threading.Thread):
         # initially logged-out
         self.logged_out.set()
 
-        config = spotify.Config()
+        self.config = spotify.Config()
         default_dir = default_settings_dir()
 
         self.post = PostActions(args, self)
-        self.web = WebAPI(args, self)
+        #self.web = WebAPI(args, self)
 
         proxy = os.environ.get('http_proxy')
         if proxy is not None:
-            config.proxy = proxy
+            self.config.proxy = proxy
 
         # application key location
         if args.key is not None:
-            config.load_application_key_file(args.key)
+            self.config.load_application_key_file(args.key)
         else:
             if not path_exists(default_dir):
                 os.makedirs(enc_str(default_dir))
@@ -108,18 +108,18 @@ class Ripper(threading.Thread):
                       Fore.RESET)
                 sys.exit(1)
 
-            config.load_application_key_file(app_key_path)
+            self.config.load_application_key_file(app_key_path)
 
         # settings directory
         if args.settings is not None:
             settings_dir = norm_path(args.settings)
-            config.settings_location = settings_dir
-            config.cache_location = settings_dir
+            self.config.settings_location = settings_dir
+            self.config.cache_location = settings_dir
         else:
-            config.settings_location = default_dir
-            config.cache_location = default_dir
+            self.config.settings_location = default_dir
+            self.config.cache_location = default_dir
 
-        self.session = spotify.Session(config=config)
+        self.session = spotify.Session(config=self.config)
         self.session.volume_normalization = args.normalize
 
         # disable scrobbling
@@ -148,7 +148,7 @@ class Ripper(threading.Thread):
                         self.play_token_lost)
         self.session.on(spotify.SessionEvent.LOGGED_IN,
                         self.on_logged_in)
-
+        
         self.event_loop = EventLoop(self.session, 0.1, self)
 
     def stop_event_loop(self):
@@ -174,6 +174,7 @@ class Ripper(threading.Thread):
             else:
                 self.login_as_user(args.user, args.password)
 
+        self.web = WebAPI(args, self)
         return self.login_success
 
     def run(self):
@@ -283,6 +284,9 @@ class Ripper(threading.Thread):
                                 track.link.uri + Fore.RESET)
                             print(Fore.CYAN + self.audio_file + Fore.RESET)
                             self.post.queue_remove_from_playlist(idx)
+                            if args.update_metadata is not None:
+                                # update id3v2 with metadata and embed front cover image
+                                set_metadata_tags(args, self.audio_file, idx, track, self)
                             continue
 
                     self.session.player.load(track)

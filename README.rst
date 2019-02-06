@@ -1,7 +1,8 @@
 spotify-ripper |Version|
 ========================
 A fork of
-`spotify-ripper <https://github.com/jrnewell/spotify-ripper`__ that uses `spotipy <https://github.com/plamere/spotipy>`__ for WebAPI integration and playlist updating
+`spotify-ripper <https://github.com/wolfmanx/spotify-ripper`__ that uses `spotipy <https://github.com/plamere/spotipy>`__ for WebAPI integration and playlist updating, but also adds/refreshes tokens for the regular WebAPI as most functions now require an authorization token. 
+This fork also adds a few options (e.g. --update-metadata: update metadata on existing files) and formating capabilities.
 
 ***IMPORTANT*** Due to the playlist retreival method of libspotify (pyspotify library) no longer functioning, a spotify web api account is now required for playlist ripping and emptying
                 please read the section below "Remove From Playlist Option" for instructions and tips on setting up a web api client and generating a token
@@ -194,6 +195,7 @@ Command Line
       --stop-after STOP_AFTER
                             Stops script after a certain amount of time has passed (e.g. 1h30m). Alternatively, accepts a specific time in 24hr format to stop after (e.g 03:30, 16:15)
       --timeout TIMEOUT     Override the PySpotify timeout value in seconds (Default=10 seconds)
+	  --update-metadata		Attempt to update metadata on existing files from Spotify\'s Web API
       -V, --version         show program's version number and exit
       --wav                 Rip songs to uncompressed WAV file instead of MP3
       --windows-safe        Make filename safe for Windows file system (truncate filename to 255 characters)
