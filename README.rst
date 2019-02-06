@@ -9,9 +9,9 @@ This fork also adds a few options (e.g. --update-metadata: update metadata on ex
                 Take a look at: https://developer.spotify.com/console/
 
                 make sure you export the web api credentials in your unix shell
-                export SPOTIPY_CLIENT_ID=\'77aa1aa93dc0416397f22a7a9b4a815b\'
-                export SPOTIPY_CLIENT_SECRET=\'0d79181c57ee412aaa770af257edf07a\'
-                export SPOTIPY_REDIRECT_URI=\'http://www.purple.com\'
+                ``export SPOTIPY_CLIENT_ID=\'77aa1aa93dc0416397f22a7a9b4a815b\'``
+                ``export SPOTIPY_CLIENT_SECRET=\'0d79181c57ee412aaa770af257edf07a\'``
+                ``export SPOTIPY_REDIRECT_URI=\'http://www.purple.com\'``
 
 Spotify-ripper is a small ripper script for Spotify that rips Spotify
 URIs to audio files and includes ID3 tags and cover art.  By default spotify-ripper will encode to MP3 files, but includes the ability to rip to WAV, FLAC, Ogg Vorbis, Opus, AAC, and MP4/M4A.
@@ -195,7 +195,7 @@ Command Line
       --stop-after STOP_AFTER
                             Stops script after a certain amount of time has passed (e.g. 1h30m). Alternatively, accepts a specific time in 24hr format to stop after (e.g 03:30, 16:15)
       --timeout TIMEOUT     Override the PySpotify timeout value in seconds (Default=10 seconds)
-      --update-metadata     Attempt to update metadata on existing files from Spotify\'s Web API
+      --update-metadata     Attempt to update metadata on existing files from Spotify's Web API
       -V, --version         show program's version number and exit
       --wav                 Rip songs to uncompressed WAV file instead of MP3
       --windows-safe        Make filename safe for Windows file system (truncate filename to 255 characters)
