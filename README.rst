@@ -171,8 +171,8 @@ Command Line
                             Convert the file name to normalized ASCII with unicodedata.normalize (NFKD)
       -o, --overwrite       Overwrite existing MP3 files [Default=skip]
       --opus                Rip songs to Opus encoding instead of MP3
-	  --partial-check {none,weak,weak:<sec>,strict}
-                        	Check for and overwrite partially ripped files. "weak" will err on the side of not re-ripping the file if it is unsure, whereas "strict" will re-rip the file.  You can override the number of seconds of wiggle-room for the "weak" check using "weak:<sec>" [Default=weak:3]
+      --partial-check {none,weak,weak:<sec>,strict}
+                            Check for and overwrite partially ripped files. "weak" will err on the side of not re-ripping the file if it is unsure, whereas "strict" will re-rip the file.  You can override the number of seconds of wiggle-room for the "weak" check using "weak:<sec>" [Default=weak:3]
       --play-token-resume RESUME_AFTER
                             If the 'play token' is lost to a different device using the same Spotify account, the script will wait a speficied amount of time before restarting. This argument takes the same values as --resume-after [Default=abort]
       --playlist-m3u        create a m3u file when ripping a playlist
@@ -195,7 +195,7 @@ Command Line
       --stop-after STOP_AFTER
                             Stops script after a certain amount of time has passed (e.g. 1h30m). Alternatively, accepts a specific time in 24hr format to stop after (e.g 03:30, 16:15)
       --timeout TIMEOUT     Override the PySpotify timeout value in seconds (Default=10 seconds)
-	  --update-metadata		Attempt to update metadata on existing files from Spotify\'s Web API
+      --update-metadata     Attempt to update metadata on existing files from Spotify\'s Web API
       -V, --version         show program's version number and exit
       --wav                 Rip songs to uncompressed WAV file instead of MP3
       --windows-safe        Make filename safe for Windows file system (truncate filename to 255 characters)
