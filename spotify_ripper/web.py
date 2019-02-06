@@ -4,6 +4,8 @@ from __future__ import unicode_literals
 
 from colorama import Fore
 from spotify_ripper.utils import *
+import spotipy.client
+import spotipy.util as util
 import os
 import time
 import spotify
@@ -11,6 +13,20 @@ import requests
 import csv
 import re
 
+SPOFITY_WEB_API_SCOPE = ' '.join([
+    'playlist-read-private',
+    'playlist-read-collaborative',
+    'playlist-modify-public',
+    'playlist-modify-private',
+    'user-follow-modify',
+    'user-follow-read',
+    'user-library-read',
+    'user-library-modify',
+    'user-top-read',
+    'user-read-playback-state',
+    'user-modify-playback-state',
+    'user-read-currently-playing',
+])
 
 class WebAPI(object):
 
@@ -23,8 +39,44 @@ class WebAPI(object):
             "genres": {},
             "charts": {},
             "large_coverart": {}
-        }
+		}
+        self.client_id = os.environ["SPOTIPY_CLIENT_ID"]
+        self.client_secret = os.environ["SPOTIPY_CLIENT_SECRET"]
+        self.redirect_uri = os.environ["SPOTIPY_REDIRECT_URI"]
+        #self.token = None
+        #self.spotify_oauth2 = None
+        #self.check_spotipy_logged_in()
+        self.spotify_oauth2 = spotipy.oauth2.SpotifyClientCredentials(self.client_id, self.client_secret)
+        token = self.spotify_oauth2.get_access_token()
+        self.spotify = spotipy.Spotify(auth=token)
+        self.spotify.trace = False
+    
+    def get_spotipy_oauth(self):
+        cache_location = os.path.join(self.ripper.config.cache_location, 'spotipy_token.cache')
+        try:
+            # Clean up tokens pre 2.2.1
+            # TODO remove soon
+            with open(cache_location, 'r') as f:
+                contents = f.read()
+            data = json.loads(contents)
+            if 'scope' in data and data['scope'] is None:
+                del data['scope']
+                with open(cache_location, 'w') as f:
+                    f.write(json.dumps(data))
+        except IOError:
+            pass
+        except ValueError:
+            logger.warning('ValueError while getting token info',exc_info=True)
+        return spotipy.oauth2.SpotifyOAuth(self.client_id, self.client_secret, self.redirect_uri, scope=SPOFITY_WEB_API_SCOPE, cache_path=cache_location)
 
+
+    def check_spotipy_logged_in(self):
+        self.spotify_oauth2 = self.get_spotipy_oauth()
+        token_info = self.spotify_oauth2.get_cached_token()
+        if token_info:
+            self.token = token_info['access_token']
+            print("Token: " + self.token)
+        
     def cache_result(self, name, uri, result):
         self.cache[name][uri] = result
 
@@ -39,7 +91,8 @@ class WebAPI(object):
         print(Fore.GREEN + "Attempting to retrieve " + msg +
               " from Spotify's Web API" + Fore.RESET)
         print(Fore.CYAN + url + Fore.RESET)
-        res = requests.get(url)
+        res = requests.get(url, headers = {'Content-Type':'application/json', \
+              'Authorization': 'Bearer {}'.format(self.spotify_oauth2.get_access_token())})
         if res.status_code == 200:
             return res
         else:
@@ -235,9 +288,16 @@ class WebAPI(object):
 
 
     def get_large_coverart(self, uri):
-        def get_track_json(track_id):
+        def get_track(track_id):
+            print('Getting Large Album Art - id: '+ track_id)
             url = self.api_url('tracks/' + track_id)
             return self.request_json(url, "track")
+            #results = self.spotify.track(track_id)
+            if results:
+                return results['track']
+                #return track['album']['images'][0]['url']
+            else:
+                return None
 
         def get_image_data(url):
             response = self.request_url(url, "cover art")
@@ -253,7 +313,7 @@ class WebAPI(object):
         if len(uri_tokens) != 3:
             return None
 
-        track = get_track_json(uri_tokens[2])
+        track = get_track(uri_tokens[2])
         if track is None:
             return None
 
