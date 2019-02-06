@@ -221,7 +221,7 @@ Follow this procedure: <https://support.spotify.com/dk/account_payment_help/acco
 Config File
 ~~~~~~~~~~~
 
-For options that you want set on every run, you can use a config file named ``config.ini`` in the settings folder (defaults to ``~/.spotify-ripper``).  The options in the config file use the same name as the command line options with the exception that dashes are translated to ``snake_case``.  Any option specified in the command line will overwrite any setting in the config file.  Please put all options under a ``[main]`` section.
+For options that you want set on every run, you can use a config file named ``config.ini`` in the settings folder (defaults to ``~/.spotify-ripper``).  Alternatively, a config file directory of choice can be specified using the -S option (e.g. -S ./local_config). The options in the config file use the same name as the command line options with the exception that dashes are translated to ``snake_case``.  Any option specified in the command line will overwrite any setting in the config file.  Please put all options under a ``[main]`` section.
 
 Here is an example config file
 
@@ -229,10 +229,13 @@ Here is an example config file
 
     [main]
     ascii = True
-    format = {album_artist}/{album}/{artist} - {track_name}.{ext}
-    quality = 160
-    vorbis = True
+    format = /mnt/Nas/music/flac/{artist:1l}/{artist} - {track_name}.{ext}
+    quality = 320
+    flac = True
     last = True
+    genres = album
+    large-cover-art = True
+
 
 Format String
 -------------
