@@ -9,6 +9,7 @@ This fork also adds a few options (e.g. --update-metadata: update metadata on ex
                 Take a look at: https://developer.spotify.com/console/
 
                 make sure you export the web api credentials in your unix shell
+				
                 ``export SPOTIPY_CLIENT_ID=\'77aa1aa93dc0416397f22a7a9b4a815b\'``
                 ``export SPOTIPY_CLIENT_SECRET=\'0d79181c57ee412aaa770af257edf07a\'``
                 ``export SPOTIPY_REDIRECT_URI=\'http://www.purple.com\'``
