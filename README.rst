@@ -215,7 +215,7 @@ Command Line
 Facebook Login
 ~~~~~~~~~~~~~~
 
-It's claimed that Spotify-ripper will work with your regular Facebook login/password if you setup your Spotify account to login using your Facebook credentials, but I have not succeeded in making this work.  After converting the (premium) account use a Spotify login/password, login succeeded.
+It's claimed that Spotify-ripper will work with your regular Facebook login/password if you setup your Spotify account to login using your Facebook credentials, but I have not succeeded in making this work.  After converting the (premium) account to use a Spotify login/password, login succeeded.
 Follow this procedure: <https://support.spotify.com/dk/account_payment_help/account_help/i-want-to-use-spotify-without-facebook/>
 
 Config File
