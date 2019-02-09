@@ -102,10 +102,8 @@ class Ripper(threading.Thread):
 
             app_key_path = os.path.join(default_dir, "spotify_appkey.key")
             if not path_exists(app_key_path):
-                print("\n" + Fore.YELLOW +
-                      "Please copy your spotify_appkey.key to " +
-                      default_dir + ", or use the --key|-k option" +
-                      Fore.RESET)
+                print("\n" + Fore.YELLOW + "Please copy your spotify_appkey.key to " +
+                      default_dir + ", or use the --key|-k option" + Fore.RESET)
                 sys.exit(1)
 
             self.config.load_application_key_file(app_key_path)
@@ -249,9 +247,7 @@ class Ripper(threading.Thread):
         self.progress.calc_total(all_tracks)
 
         if self.progress.total_size > 0:
-            print(
-                "Total Download Size: " +
-                format_size(self.progress.total_size))
+            print("Total Download Size: " + format_size(self.progress.total_size))
 
         # create track iterator
         for uri in uris:
@@ -279,9 +275,7 @@ class Ripper(threading.Thread):
                     print('Loading track...')
                     track.load(args.timeout)
                     if track.availability != 1 or track.is_local:
-                        print(
-                            Fore.RED + 'Track is not available, '
-                                       'skipping...' + Fore.RESET)
+                        print(Fore.RED + 'Track is not available, skipping...' + Fore.RESET)
                         self.post.log_failure(track)
                         continue
 
@@ -291,9 +285,7 @@ class Ripper(threading.Thread):
                         if is_partial(self.audio_file, track):
                             print("Overwriting partial file")
                         else:
-                            print(
-                                Fore.YELLOW + "Skipping " +
-                                track.link.uri + Fore.RESET)
+                            print(Fore.YELLOW + "Skipping " + track.link.uri + Fore.RESET)
                             print(Fore.CYAN + self.audio_file + Fore.RESET)
                             self.post.queue_remove_from_playlist(idx)
                             if args.update_metadata is not None:
@@ -328,8 +320,7 @@ class Ripper(threading.Thread):
                     if self.skip.is_set():
                         extra_line = "" if self.play_token_resume.is_set() \
                                         else "\n"
-                        print(extra_line + Fore.YELLOW +
-                            "User skipped track... " + Fore.RESET)
+                        print(extra_line + Fore.YELLOW + "User skipped track... " + Fore.RESET)
                         self.session.player.play(False)
                         self.post.clean_up_partial()
                         self.post.log_failure(track)
@@ -476,8 +467,7 @@ class Ripper(threading.Thread):
             attempt_count = 1
             while starred is None:
                 if attempt_count > 3:
-                    print(Fore.RED + "Could not load starred playlist..." +
-                          Fore.RESET)
+                    print(Fore.RED + "Could not load starred playlist..." + Fore.RESET)
                     return iter([])
                 print("Attempt " + str(attempt_count) + " failed: Spotify " +
                       "returned None for starred playlist, trying again in " +
@@ -562,8 +552,7 @@ class Ripper(threading.Thread):
             self.rip_queue.put_nowait((audio_format.sample_rate,
                                        frame_bytes, num_frames))
         except queue.Full:
-            print(Fore.RED + "rip_queue is full. dropped music data" +
-                  Fore.RESET)
+            print(Fore.RED + "rip_queue is full. dropped music data" + Fore.RESET)
         return num_frames
 
     def on_connection_state_changed(self, session):
@@ -626,7 +615,6 @@ class Ripper(threading.Thread):
         """logout from Spotify"""
         time.sleep(0.1)
         if self.logged_in.is_set():
-            print('Logging out...')
             self.session.logout()
             self.logged_out.wait()
 
@@ -681,8 +669,6 @@ class Ripper(threading.Thread):
 
         if args.normalized_ascii:
             audio_file = to_normalized_ascii(audio_file)
-        print(audio_file)
-
 
         # create directory if it doesn't exist
         audio_path = os.path.dirname(audio_file)

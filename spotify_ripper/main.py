@@ -605,9 +605,7 @@ def main(prog_args=sys.argv[1:]):
     # login and uri_parse on main thread to catch any KeyboardInterrupt
     try:
         if not ripper.login():
-            print(
-                Fore.RED + "Encountered issue while logging into "
-                           "Spotify, aborting..." + Fore.RESET)
+            print(Fore.RED + "Encountered issue while logging into Spotify, aborting..." + Fore.RESET)
             abort(set_logged_in=True)
         else:
             check_uri_args()
