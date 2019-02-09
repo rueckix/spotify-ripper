@@ -48,6 +48,7 @@ class WebAPI(object):
         #self.check_spotipy_logged_in()
         self.spotify_oauth2 = spotipy.oauth2.SpotifyClientCredentials(self.client_id, self.client_secret)
         token = self.spotify_oauth2.get_access_token()
+
         self.spotify = spotipy.Spotify(auth=token)
         self.spotify.trace = False
     

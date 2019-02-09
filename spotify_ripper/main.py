@@ -165,7 +165,7 @@ def main(prog_args=sys.argv[1:]):
 
     prog_version = pkg_resources.require("spotify-ripper")[0].version
     parser.add_argument(
-        '-a', '--ascii', action='store_true',
+        '-a', '--ascii', default=False, #action='store_true',
         help='Convert the file name and the metadata tags to ASCII '
              'encoding [Default=utf-8]')
     encoding_group.add_argument(
@@ -408,6 +408,7 @@ def main(prog_args=sys.argv[1:]):
     else:
         init(strip=True if args.strip_colors else None)
 
+    print(args.ascii)
     if args.ascii_path_only is True:
         args.ascii = True
 

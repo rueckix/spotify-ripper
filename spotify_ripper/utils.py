@@ -27,6 +27,7 @@ def get_args():
 
 def enc_str(_str):
     encoding = "ascii" if get_args().ascii else "utf-8"
+    print (encoding)
     return _str.encode(encoding)
 
 
@@ -180,20 +181,18 @@ def format_track_string(ripper, format_string, idx, track):
     album_browser = track.album.browse()
     album_browser.load(args.timeout)
 
-    track_artist = to_ascii(
-        escape_filename_part(track.artists[0].name))
-    track_artists = to_ascii(
-        escape_filename_part(", ".join(
-            [artist.name for artist in track.artists])))
+    #track_artist = to_ascii(escape_filename_part(track.artists[0].name))
+    track_artist = escape_filename_part(track.artists[0].name)
+    #track_artists = to_ascii(escape_filename_part(", ".join([artist.name for artist in track.artists])))
+    track_artists = escape_filename_part(", ".join([artist.name for artist in track.artists]))
     if len(track.artists) > 1:
-        featuring_artists = to_ascii(
-            escape_filename_part(", ".join(
-                [artist.name for artist in track.artists[1:]])))
+        #featuring_artists = to_ascii(escape_filename_part(", ".join([artist.name for artist in track.artists[1:]])))
+        featuring_artists = escape_filename_part(", ".join([artist.name for artist in track.artists[1:]]))
     else:
         featuring_artists = ""
 
-    album_artist = to_ascii(
-        escape_filename_part(current_album.artist.name))
+    #album_artist = to_ascii(escape_filename_part(current_album.artist.name))
+    album_artist = escape_filename_part(current_album.artist.name)
     album_artists_web = track_artists
 
     # only retrieve album_artist_web if it exists in the format string
@@ -201,11 +200,13 @@ def format_track_string(ripper, format_string, idx, track):
         artist_array = \
             ripper.web.get_artists_on_album(current_album.link.uri)
         if artist_array is not None:
-            album_artists_web = to_ascii(
-                escape_filename_part(", ".join(artist_array)))
+            #album_artists_web = to_ascii(escape_filename_part(", ".join(artist_array)))
+            album_artists_web = escape_filename_part(", ".join(artist_array))
 
-    album = to_ascii(escape_filename_part(track.album.name))
-    track_name = to_ascii(escape_filename_part(track.name))
+    #album = to_ascii(escape_filename_part(track.album.name))
+    album = escape_filename_part(track.album.name)
+    #track_name = to_ascii(escape_filename_part(track.name))
+    track_name = escape_filename_part(track.name)
     year = str(track.album.year)
     extension = args.output_type
     idx_str = str(idx + 1)
@@ -226,7 +227,8 @@ def format_track_string(ripper, format_string, idx, track):
 
     #if current_playlist is not None:
     if ripper.playlist_name is not None:
-        playlist_name = to_ascii(sanitize_playlist_name(ripper.playlist_name))
+        playlist_name = sanitize_playlist_name(ripper.playlist_name)
+        #playlist_name = to_ascii(sanitize_playlist_name(ripper.playlist_name))
         #playlist_name = to_ascii(sanitize_playlist_name(current_playlist.name))
         #playlist_owner = to_ascii(current_playlist.owner.display_name)
         playlist_owner = ripper.playlist_owner
@@ -364,7 +366,6 @@ def format_track_string(ripper, format_string, idx, track):
         elif args.format_case == "capitalize":
             format_string = ' '.join(word[0].upper() + word[1:] for \
                 word in format_string.split())
-
     return format_string
 
 

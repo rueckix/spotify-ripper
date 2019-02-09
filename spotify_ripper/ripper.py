@@ -191,15 +191,16 @@ class Ripper(threading.Thread):
         # list of spotify URIs
         uris = args.uri
         
+
         # check fo playlist by name option
         if args.playlist:
             user = self.session.user.display_name
             uris = self.web.get_playlist_by_name(uris[0], user)
         
         # if uris is a playlist, substitute for list of tracks
+        self.playlist_name = None
+        self.playlist_owner = None
         if ":playlist:" in uris[0]:
-            self.playlist_name = None
-            self.playlist_owner = None
             uris = self.web.get_playlist_tracks(self, uris[0])
             
         def get_tracks_from_uri(uri):
@@ -675,10 +676,13 @@ class Ripper(threading.Thread):
             audio_file = re.sub('[:"*?<>|]', '', audio_file)
 
         # prepend base_dir
-        audio_file = to_ascii(os.path.join(base_dir(), audio_file))
+        #audio_file = to_ascii(os.path.join(base_dir(), audio_file))
+        audio_file = os.path.join(base_dir(), audio_file)
 
         if args.normalized_ascii:
             audio_file = to_normalized_ascii(audio_file)
+        print(audio_file)
+
 
         # create directory if it doesn't exist
         audio_path = os.path.dirname(audio_file)
