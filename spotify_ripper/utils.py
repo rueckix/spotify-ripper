@@ -27,7 +27,6 @@ def get_args():
 
 def enc_str(_str):
     encoding = "ascii" if get_args().ascii else "utf-8"
-    print (encoding)
     return _str.encode(encoding)
 
 

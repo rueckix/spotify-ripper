@@ -408,7 +408,6 @@ def main(prog_args=sys.argv[1:]):
     else:
         init(strip=True if args.strip_colors else None)
 
-    print(args.ascii)
     if args.ascii_path_only is True:
         args.ascii = True
 
