@@ -22,7 +22,7 @@ URIs to audio files and includes ID3 tags and cover art.  By default spotify-rip
 
 Libspotify’s Deprecation
 ------------------------
-**From Mopidy's documentation**
+**From Mopidy's documentation** (NOTE: this section may not be fully accurate as Spotify introduces new WebAPI functions)
 
 *Note that as of May 2015 libspotify is officially deprecated by Spotify and is no longer actively maintained.*
 
