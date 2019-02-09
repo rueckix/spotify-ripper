@@ -119,7 +119,7 @@ Command Line
     Rips Spotify URIs to MP3s with ID3 tags and album covers
 
     positional arguments:
-      uri                   One or more Spotify URI(s) (either URI, a file of URIs or a search query)
+      uri                   One (e.g. playlist URI) or more Spotify URI(s) (either track URI, a file of URIs or a search query)
 
     optional arguments:
       -h, --help            show this help message and exit
