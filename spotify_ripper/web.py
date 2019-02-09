@@ -170,7 +170,8 @@ class WebAPI(object):
                     print(Fore.YELLOW + "Playlist with name " + name + " found: " + playlist["uri"] + Fore.RESET)
                     return [playlist["uri"]]
             offset += 50
-        return None                   
+        print(Fore.RED + "Playlist with name " + name + " not found" + Fore.RESET)
+        return []                   
 
     def get_playlist_tracks(self, ripper, uri):
         def get_playlist_name_and_count_json(playlist_id):
