@@ -1,7 +1,7 @@
 spotify-ripper |Version|
 ========================
 A fork of
-`spotify-ripper <https://github.com/wolfmanx/spotify-ripper` that uses `spotipy <https://github.com/plamere/spotipy> for WebAPI integration and playlist updating, but also adds/refreshes tokens for the regular WebAPI as most functions now require an authorization token. 
+`spotify-ripper <https://github.com/wolfmanx/spotify-ripper` that still uses `spotipy <https://github.com/plamere/spotipy> for a small set of functions, while progressively moving to Spotify's WebAPI for most functions (e.g. playlist functions), including the automated handling of tokens, given the fact that most WebAPI functions now require an authorization token. 
 This fork also adds a few options (e.g. --update-metadata: update metadata on existing files) and formating capabilities.
 
 ***IMPORTANT*** Due to the playlist retreival method of libspotify (pyspotify library) no longer functioning, a spotify web api account is now required for playlist ripping and emptying

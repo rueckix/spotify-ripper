@@ -168,7 +168,7 @@ def change_file_extension(file_name, ext):
 def format_track_string(ripper, format_string, idx, track):
     args = get_args()
     current_album = ripper.current_album
-    current_playlist = ripper.current_playlist
+    #current_playlist = ripper.current_playlist
 
     # this fixes the track.disc
     if not track.is_loaded:
@@ -224,11 +224,12 @@ def format_track_string(ripper, format_string, idx, track):
     else:
         smart_num = track_num
 
-    if current_playlist is not None:
-        playlist_name = to_ascii(
-            sanitize_playlist_name(current_playlist.name))
-        playlist_owner = to_ascii(
-            current_playlist.owner.display_name)
+    #if current_playlist is not None:
+    if ripper.playlist_name is not None:
+        playlist_name = to_ascii(sanitize_playlist_name(ripper.playlist_name))
+        #playlist_name = to_ascii(sanitize_playlist_name(current_playlist.name))
+        #playlist_owner = to_ascii(current_playlist.owner.display_name)
+        playlist_owner = ripper.playlist_owner
     else:
         playlist_name = "No Playlist"
         playlist_owner = "No Playlist Owner"

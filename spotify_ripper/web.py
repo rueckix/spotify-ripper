@@ -157,6 +157,46 @@ class WebAPI(object):
         self.cache_result("albums_with_filter", uri, album_uris)
         return album_uris
 
+    def get_playlist_tracks(self, ripper, uri):
+        def get_playlist_name_and_count_json(playlist_id):
+            url = self.api_url('playlists/' + playlist_id + "?fields=name, owner.display_name, tracks.total")
+            res = self.request_json(url, "playlist name and track count")
+            ripper.playlist_name = res['name']
+            ripper.playlist_owner = res['owner']["display_name"]
+            count = res['tracks']['total']
+            print(Fore.YELLOW + "Playlist name: " + ripper.playlist_name + 
+                  " owned by " + ripper.playlist_owner + " with " + str(count) + " tracks(s)" + Fore.RESET)
+            return count
+        
+        def get_playlist_tracks_json(playlist_id, offset):
+            url = self.api_url('playlists/' + playlist_id + '/tracks?fields=items(track(uri))&limit=100&offset=' + str(offset))
+            return self.request_json(url, "playlist")
+
+        # check for cached result
+        #cached_result = self.get_cached_result("artists_on_album", uri)
+        #if cached_result is not None:
+        #    return cached_result
+
+        # extract playlist_id from uri
+        uri_tokens = uri.split(':')
+        if len(uri_tokens) != 5:
+            return None
+
+        playlist_id = uri_tokens[4]
+        self.playlist_track_count = get_playlist_name_and_count_json(playlist_id)
+
+        offset = 0
+        playlist_tracks = []
+        while offset < self.playlist_track_count:
+            playlist = get_playlist_tracks_json(playlist_id, offset)
+            playlist_tracks += [track['track']['uri'] for track in playlist['items']]
+            offset += 100
+            
+        #if playlist_tracks is []:
+            #return None
+        #self.cache_result("artists_on_album", uri, result)
+        return playlist_tracks
+    
     def get_artists_on_album(self, uri):
         def get_album_json(album_id):
             url = self.api_url('albums/' + album_id)
@@ -289,7 +329,6 @@ class WebAPI(object):
 
     def get_large_coverart(self, uri):
         def get_track(track_id):
-            print('Getting Large Album Art - id: '+ track_id)
             url = self.api_url('tracks/' + track_id)
             return self.request_json(url, "track")
             #results = self.spotify.track(track_id)
@@ -301,8 +340,11 @@ class WebAPI(object):
 
         def get_image_data(url):
             response = self.request_url(url, "cover art")
-            return response.content
-
+            if response:
+                return response.content
+            else:
+                return None
+            
         # check for cached result
         cached_result = self.get_cached_result("large_coverart", uri)
         if cached_result is not None:
@@ -323,7 +365,7 @@ class WebAPI(object):
             return None
 
         for image in images:
-            if image["width"] == 640:
+            if image["width"] > 300:
                 self.cache_result("large_coverart", uri, image["url"])
                 return get_image_data(image["url"])
 

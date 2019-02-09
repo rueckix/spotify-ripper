@@ -190,7 +190,13 @@ class Ripper(threading.Thread):
 
         # list of spotify URIs
         uris = args.uri
-
+        
+        # if uris is a playlist, substitute for list of tracks
+        if ":playlist:" in uris[0]:
+            self.playlist_name = None
+            self.playlist_owner = None
+            uris = self.web.get_playlist_tracks(self, uris[0])
+            
         def get_tracks_from_uri(uri):
             self.current_playlist = None
             self.current_album = None
@@ -425,8 +431,12 @@ class Ripper(threading.Thread):
         if link.type == spotify.LinkType.TRACK:
             track = link.as_track()
             return iter([track])
+            '''
+        # Plylists are now handled in run loop
         elif link.type == spotify.LinkType.PLAYLIST:
-            self.current_playlist = link.as_playlist()
+            #self.current_playlist = link.as_playlist()
+            playlist_tracks = self.web.get_playlist_tracks(uri)
+            self.current_playlist = self.session.get_playlist(uri)
             attempt_count = 1
             while self.current_playlist is None:
                 if attempt_count > 3:
@@ -440,9 +450,13 @@ class Ripper(threading.Thread):
                 self.current_playlist = link.as_playlist()
                 attempt_count += 1
 
-            print('Loading playlist...')
-            self.current_playlist.load(args.timeout)
+            print('Loading playlist...', args.timeout)
+            #self.current_playlist.load(args.timeout)
+            self.current_playlist.load()
+            print('Finished loading playlist...'+self.current_playlist.name,len(self.current_playlist.tracks))
             return iter(self.current_playlist.tracks)
+            return iter(playlist_tracks)
+            '''
         elif link.type == spotify.LinkType.STARRED:
             link_user = link.as_user()
 
