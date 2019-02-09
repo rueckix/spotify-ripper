@@ -191,6 +191,11 @@ class Ripper(threading.Thread):
         # list of spotify URIs
         uris = args.uri
         
+        # check fo playlist by name option
+        if args.playlist:
+            user = self.session.user.display_name
+            uris = self.web.get_playlist_by_name(uris[0], user)
+        
         # if uris is a playlist, substitute for list of tracks
         if ":playlist:" in uris[0]:
             self.playlist_name = None

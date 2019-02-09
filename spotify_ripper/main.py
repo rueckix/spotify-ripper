@@ -302,6 +302,9 @@ def main(prog_args=sys.argv[1:]):
              'amount of time before restarting. This argument takes the same '
              'values as --resume-after [Default=abort]')
     parser.add_argument(
+        '--playlist', action='store_true', default=None,
+        help='Rip the named playlist. In this case no uri specifier is needed')
+    parser.add_argument(
         '--playlist-m3u', action='store_true',
         help='create a m3u file with relative paths when ripping a playlist')
     parser.add_argument(
@@ -587,8 +590,10 @@ def main(prog_args=sys.argv[1:]):
         if ripper.ripping.is_set():
             ripper.skip.set()
 
-    # check if we were passed a file name or search
+    # check if we were passed a file name or search, or skip check if passed a playlist
     def check_uri_args():
+        if args.playlist:
+            return
         if len(args.uri) == 1 and path_exists(args.uri[0]):
             encoding = "ascii" if args.ascii else "utf-8"
             args.uri = [line.strip() for line in

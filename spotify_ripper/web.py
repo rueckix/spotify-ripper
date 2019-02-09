@@ -157,6 +157,21 @@ class WebAPI(object):
         self.cache_result("albums_with_filter", uri, album_uris)
         return album_uris
 
+    def get_playlist_by_name(self, name, user):
+        offset = 0
+        count = 1
+        while offset < count:
+            url = self.api_url('users/' + user + '/playlists?limit=50&offset=' + str(offset))
+            res = self.request_json(url, "user's playlists")
+            if offset == 0:
+                count = res['total']
+            for playlist in res['items']:
+                 if playlist['name'] == name:
+                    print(Fore.YELLOW + "Playlist with name " + name + " found: " + playlist["uri"] + Fore.RESET)
+                    return [playlist["uri"]]
+            offset += 50
+        return None                   
+
     def get_playlist_tracks(self, ripper, uri):
         def get_playlist_name_and_count_json(playlist_id):
             url = self.api_url('playlists/' + playlist_id + "?fields=name, owner.display_name, tracks.total")

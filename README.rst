@@ -106,14 +106,14 @@ Command Line
                           [-p PASSWORD] [--large-cover-art] [-l] [-L LOG] [--pcm]
                           [--mp4] [--normalize] [-na] [-o] [--opus]
                           [--partial-check {none,weak,strict}]
-                          [--play-token-resume RESUME_AFTER] [--playlist-m3u]
-                          [--playlist-wpl] [--playlist-sync] [--plus-pcm]
+                          [--play-token-resume RESUME_AFTER] [--playlist_name NAME]
+						  [--playlist-m3u] [--playlist-wpl] [--playlist-sync] [--plus-pcm]
                           [--plus-wav] [-q VBR] [-Q {160,320,96}]
                           [--remove-offline-cache] [--resume-after RESUME_AFTER]
                           [-R REPLACE [REPLACE ...]] [-s]
                           [--stereo-mode {j,s,f,d,m,l,r}]
                           [--stop-after STOP_AFTER] [--timeout TIMEOUT] [-V]
-                          [--wav] [--windows-safe] [--vorbis] [-r]
+                          [--update-metadata] [--wav] [--windows-safe] [--vorbis] [-r]
                           uri [uri ...]
 
     Rips Spotify URIs to MP3s with ID3 tags and album covers
@@ -177,7 +177,8 @@ Command Line
                             Check for and overwrite partially ripped files. "weak" will err on the side of not re-ripping the file if it is unsure, whereas "strict" will re-rip the file.  You can override the number of seconds of wiggle-room for the "weak" check using "weak:<sec>" [Default=weak:3]
       --play-token-resume RESUME_AFTER
                             If the 'play token' is lost to a different device using the same Spotify account, the script will wait a speficied amount of time before restarting. This argument takes the same values as --resume-after [Default=abort]
-      --playlist-m3u        create a m3u file when ripping a playlist
+      --playlist_name NAME	Rip the named playlist. In this case no uri specifier is needed
+	  --playlist-m3u        create a m3u file when ripping a playlist
       --playlist-wpl        create a wpl file when ripping a playlist
       --playlist-sync       Sync playlist songs (rename and remove old songs)
       --plus-pcm            Saves a .pcm file in addition to the encoded file (e.g. mp3)
