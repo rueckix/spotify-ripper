@@ -247,6 +247,7 @@ def set_metadata_tags(args, audio_file, idx, track, ripper):
                 pic.mime = "image/jpeg"
                 pic.desc = "Front Cover"
                 pic.data = data
+                audio.clear_pictures()
                 if args.output_type == "flac":
                     audio.add_picture(pic)
                 else:

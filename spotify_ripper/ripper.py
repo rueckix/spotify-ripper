@@ -808,9 +808,7 @@ class Ripper(threading.Thread):
             # wait for process to end before continuing
             ret_code = self.rip_proc.wait()
             if ret_code != 0:
-                print(
-                    Fore.YELLOW + "Warning: encoder returned non-zero "
-                                  "error code " + str(ret_code) + Fore.RESET)
+                print(Fore.YELLOW + "Warning: encoder returned non-zero error code " + str(ret_code) + Fore.RESET)
             self.rip_proc = None
             self.pipe = None
 

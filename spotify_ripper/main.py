@@ -88,9 +88,7 @@ def patch_bug_in_mutagen():
                 b"data", struct.pack(">2I", imageformat, 0) + bytes(cover)))
         return Atom.render(_key2name(key), b"".join(atom_data))
 
-    print(
-        Fore.RED + "Monkey-patching MP4/Python 3.x bug in Mutagen" +
-        Fore.RESET)
+    print(Fore.RED + "Monkey-patching MP4/Python 3.x bug in Mutagen" + Fore.RESET)
     MP4Tags.__fixed_render_cover = __fixed_render_cover
     MP4Tags._MP4Tags__atoms[b"covr"] = (
         MP4Tags._MP4Tags__parse_cover, MP4Tags.__fixed_render_cover)
@@ -150,8 +148,7 @@ def main(prog_args=sys.argv[1:]):
     is_last_set = defaults.get('last') is True
     if is_user_set or is_last_set:
         if is_user_set and is_last_set:
-            print("spotify-ripper: error: one of the arguments -u/--user "
-                  "-l/--last is required")
+            print("spotify-ripper: error: one of the arguments -u/--user -l/--last is required")
             sys.exit(1)
         else:
             group = parser.add_mutually_exclusive_group(required=False)
@@ -361,7 +358,7 @@ def main(prog_args=sys.argv[1:]):
         '--timeout', type=int,
         help='Override the PySpotify timeout value in seconds (Default=10 seconds)')
     parser.add_argument(
-        '--update-metadata', action='store_true',
+        '--update-metadata', action='store_true', default=None,
         help='Attempt to update metadata on existing files from Spotify\'s Web API')
     parser.add_argument(
         '-V', '--version', action='version', version=prog_version)
