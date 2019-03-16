@@ -1,5 +1,36 @@
 spotify-ripper |Version|
 ========================
+General info here
+
+**Note that stream ripping violates the libspotify's ToS**
+
+# PREREQUISITES
+## From Spotify
+Get the Spotify API Keys, blablabla
+## On your machine (not needed following normal installation)
+Many random libraries
+
+# INSTALLATION
+## Mac
+brew blabla
+
+## Ubuntu
+pip blabla
+
+## DOCKER IMAGE
+docker pull blablabla
+
+# USAGE
+man pages here
+
+# EXAMPLES
+rip song
+rip album
+
+
+FULL STOP.
+
+
 A fork of
 ``spotify-ripper`` (https://github.com/wolfmanx/spotify-ripper) that still uses ``spotipy`` (https://github.com/plamere/spotipy) for a small set of functions, but progressively moves to Spotify's WebAPI for most functions (e.g. playlist functions), including the automated handling of tokens given the fact that most WebAPI functions now require an authorization token. 
 This fork also adds a few options (e.g. --update-metadata: update metadata on existing files) and formating capabilities.
