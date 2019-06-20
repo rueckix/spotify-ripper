@@ -440,7 +440,7 @@ To install spotify-ripper once pyenv is setup:
     $ sudo ln -s /usr/local/opt/libspotify/lib/libspotify.12.1.51.dylib \
         /usr/local/opt/libspotify/lib/libspotify
     $ brew install lame
-    $ pip install git+https://github.com/SolidHal/spotify-ripper
+    $ pip install git+https://github.com/Mavyre/spotify-ripper
     $ pyenv rehash
 
 **Note that Spotify may no longer be issuing developer keys.** See `Libspotify’s Deprecation`_
@@ -480,7 +480,7 @@ To install spotify-ripper once pyenv is setup:
     $ cd libspotify-12.1.51-Linux-x86_64-release/
     $ sudo make install prefix=/usr/local
     $ pip install spotipy
-    $ pip3 install git+https://github.com/SolidHal/spotify-ripper --upgrade
+    $ pip3 install git+https://github.com/Mavyre/spotify-ripper --upgrade
     $ pyenv rehash
 
 **Note that Spotify may no longer be issuing developer keys.** See `Libspotify’s Deprecation`_
@@ -565,7 +565,7 @@ Use ``pip`` to upgrade to the latest version.
 
 .. code:: bash
 
-    $ pip install --upgrade git+https://github.com/SolidHal/spotify-ripper
+    $ pip install --upgrade git+https://github.com/Mavyre/spotify-ripper
 
 
 Common Issues and Problems
