@@ -360,6 +360,22 @@ class Ripper(threading.Thread):
                     self.post.clean_up_partial()
                     self.post.log_failure(track)
                     continue
+                    
+        if self.playlist_name is not None:
+            # Mocking current_playlist
+            class Dummy: pass
+            tracks = [x[0] for x in all_tracks]
+            self.current_playlist = Dummy()
+            self.current_playlist.name = self.playlist_name
+            self.current_playlist.tracks = tracks
+            self.current_playlist.link = Dummy()
+            self.current_playlist.link.uri = args.uri[0]
+            self.current_playlist.load = lambda a : a
+
+            # Syncing playlist
+            if args.playlist_sync and self.current_playlist:
+                self.sync = Sync(args, self)
+                self.sync.sync_playlist(self.current_playlist)
 
             # create playlist m3u file if needed
             self.post.create_playlist_m3u(tracks)
