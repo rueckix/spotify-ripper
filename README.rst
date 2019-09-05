@@ -1,4 +1,4 @@
-spotify-ripper |Version|
+spotify-ripper
 ========================
 A fork of (https://github.com/Mavyre/spotify-ripper), making its Dockerfile more generic.
 Read there for how to set up the web api part.
