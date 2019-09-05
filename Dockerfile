@@ -52,5 +52,5 @@ RUN apt-get update && apt-get -y install locales
 RUN locale-gen en_GB.UTF-8
 ENV LANG='en_GB.UTF-8' LANGUAGE='en_GB:en' LC_ALL='en_GB.UTF-8'
 
-ENTRYPOINT spotify-ripper -S /config/ -k /config/spotify_appkey.key -d /music -u ${user} -p ${pass} ${playlist}
+ENTRYPOINT spotify-ripper -S /config/ -k /config/spotify_appkey.key -d /music -u ${user} -p ${pass} -r ${playlist}
 #ENTRYPOINT zsh
