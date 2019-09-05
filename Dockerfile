@@ -35,11 +35,19 @@ COPY README.rst /ripper/source-code/
 #COPY docker_config/* /ripper/source-code/
 RUN pip install .
 
-ENV pass=Password
+ENV user=
+ENV pass=
+ENV playlist=
+
+ENV SPOTIPY_CLIENT_SECRET=
+ENV SPOTIPY_CLIENT_SECRET=
+
+VOLUME /config
+VOLUME /music
 
 ENV PYTHONIOENCODING utf-8
 RUN locale-gen en_GB.UTF-8
 ENV LANG='en_GB.UTF-8' LANGUAGE='en_GB:en' LC_ALL='en_GB.UTF-8'
 
-ENTRYPOINT spotify-ripper -S /ripper/config/ -k /ripper/config/spotify_appkey.key -u morgaroth -p ${pass} spotify:user:morgaroth:playlist:4Usjw07BWhqCgRkMiFQmb7
+ENTRYPOINT spotify-ripper -S /config/ -k /config/spotify_appkey.key -d /music -u ${user} -p ${pass} ${playlist}
 #ENTRYPOINT zsh
