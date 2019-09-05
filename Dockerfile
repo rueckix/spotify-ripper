@@ -21,7 +21,7 @@ RUN apt install python-dev python-pip -y --no-install-recommends
 #RUN cd fdkaac-0.6.2 && autoreconf -i && ./configure && make install
 
 # Install libspotify
-RUN wget https://developer.spotify.com/download/libspotify/libspotify-12.1.51-Linux-x86_64-release.tar.gz && tar xvf libspotify-12.1.51-Linux-x86_64-release.tar.gz
+RUN wget https://github.com/mopidy/libspotify-archive/blob/master/libspotify-12.1.51-Linux-x86_64-release.tar.gz && tar xvf libspotify-12.1.51-Linux-x86_64-release.tar.gz
 RUN cd libspotify-12.1.51-Linux-x86_64-release/ && make install prefix=/usr/local
 
 WORKDIR /ripper/source-code
