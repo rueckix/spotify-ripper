@@ -46,6 +46,9 @@ VOLUME /config
 VOLUME /music
 
 ENV PYTHONIOENCODING utf-8
+
+
+RUN apt-get update && apt-get -y install locales
 RUN locale-gen en_GB.UTF-8
 ENV LANG='en_GB.UTF-8' LANGUAGE='en_GB:en' LC_ALL='en_GB.UTF-8'
 
