@@ -54,7 +54,7 @@ ENV LANG='en_GB.UTF-8' LANGUAGE='en_GB:en' LC_ALL='en_GB.UTF-8'
 
 WORKDIR /root/workdir
 
-COPY entrypoint /entrypoint.sh
+COPY entrypoint.sh /entrypoint.sh
 
 ENTRYPOINT bash /entrypoint.sh
 #ENTRYPOINT zsh
