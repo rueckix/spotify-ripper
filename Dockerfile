@@ -54,5 +54,7 @@ ENV LANG='en_GB.UTF-8' LANGUAGE='en_GB:en' LC_ALL='en_GB.UTF-8'
 
 WORKDIR /root/workdir
 
-ENTRYPOINT bash /ripper/source-code/entrypoint.sh
+COPY entrypoint /entrypoint.sh
+
+ENTRYPOINT bash /entrypoint.sh
 #ENTRYPOINT zsh
