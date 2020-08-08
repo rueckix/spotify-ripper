@@ -1,4 +1,4 @@
-FROM ubuntu:xenial
+FROM ubuntu:bionic
 
 RUN mkdir /ripper && mkdir /ripper/source-code
 
